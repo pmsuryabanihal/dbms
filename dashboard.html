@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+</head>
+<body>
+    <div id="dashboard-container">
+        <h1>Welcome to Your Dashboard</h1>
+        <div id="user-info">
+            <p>Logged in as: <span id="user-email"></span></p>
+            <button id="logout-button">Logout</button>
+        </div>
+
+        <div id="tools">
+            <h2>Your Tools</h2>
+            <ul>
+                <li><a href="tool1.html">Tool 1</a></li>
+                <li><a href="tool2.html">Tool 2</a></li>
+                <li><a href="tool3.html">Tool 3</a></li>
+                <!-- Add more tools here -->
+            </ul>
+        </div>
+
+        <div id="database">
+            <h2>Your Databases</h2>
+            <ul>
+                <li><a href="database1.html">Calling form</a></li>
+                <li><a href="database2.html">Registration form</a></li>
+                <!-- Add more databases here -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Firebase initialization
+        const firebaseConfig = {
+            apiKey: "AIzaSyDgH3oR0YehNzeV9RqIM6_R0yemuzI1wqg",
+            authDomain: "dbmspmsurya.firebaseapp.com",
+            projectId: "dbmspmsurya",
+            storageBucket: "dbmspmsurya.appspot.com",
+            messagingSenderId: "889452567773",
+            appId: "1:889452567773:web:47890dcf925a8421018f34",
+            measurementId: "G-6EVZH7QZL6"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Display the logged-in user's email
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                document.getElementById('user-email').textContent = user.email;
+            } else {
+                // Redirect to login if no user is authenticated
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Handle logout
+        document.getElementById('logout-button').addEventListener('click', function() {
+            firebase.auth().signOut().then(() => {
+                window.location.href = 'login.html';  // Redirect to login page after logging out
+            }).catch((error) => {
+                console.error('Logout error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
