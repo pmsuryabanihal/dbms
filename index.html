@@ -6,9 +6,9 @@
   <title>PM SURYA BANIHAL</title>
   <script type="module">
     // Import necessary Firebase modules
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
-    
+    import { initializeApp } from "firebase/app";
+    import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
     // Your Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyDgH3oR0YehNzeV9RqIM6_R0yemuzI1wqg",
@@ -26,7 +26,6 @@
     console.log("Firebase Initialized");
   </script>
 
-  <!-- Add some styles for the page -->
   <style>
     body {
       font-family: Arial, sans-serif;
