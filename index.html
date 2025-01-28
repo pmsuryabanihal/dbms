@@ -4,12 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PM SURYA BANIHAL</title>
-  <script type="module">
-    // Import necessary Firebase modules
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
-    
-    // Your Firebase configuration
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+</head>
+<body>
+  <h1>Welcome to Your PM SURYA BANIHAL, Please login</h1>
+  <form id="loginForm">
+    <input type="email" id="email" placeholder="Enter your email" required />
+    <input type="password" id="password" placeholder="Enter your password" required />
+    <button type="submit">Login</button>
+  </form>
+
+  <script>
+    // Firebase initialization
     const firebaseConfig = {
       apiKey: "AIzaSyDgH3oR0YehNzeV9RqIM6_R0yemuzI1wqg",
       authDomain: "dbmspmsurya.firebaseapp.com",
@@ -20,99 +27,23 @@
       measurementId: "G-6EVZH7QZL6"
     };
 
-    // Initialize Firebase app
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    console.log("Firebase Initialized");
-  </script>
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
 
-  <!-- Add some styles for the page -->
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f7fc;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
-    h1 {
-      text-align: center;
-      margin-top: 50px;
-      color: #007BFF;
-    }
-    #loginForm {
-      max-width: 400px;
-      margin: 50px auto;
-      padding: 20px;
-      background-color: #ffffff;
-      border-radius: 8px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    }
-    #loginForm input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-    #loginForm button {
-      width: 100%;
-      padding: 10px;
-      background-color: #007BFF;
-      border: none;
-      border-radius: 5px;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    #loginForm button:hover {
-      background-color: #0056b3;
-    }
-    #loginForm input:focus {
-      border-color: #007BFF;
-      outline: none;
-    }
-    .alert {
-      color: red;
-      text-align: center;
-      margin-top: 20px;
-    }
-  </style>
-
-</head>
-<body>
-  <h1>Welcome to PM SURYA BANIHAL, Please Login</h1>
-
-  <form id="loginForm">
-    <input type="email" id="email" placeholder="Enter your email" required />
-    <input type="password" id="password" placeholder="Enter your password" required />
-    <button type="submit">Login</button>
-  </form>
-
-  <script>
-    // Firebase Authentication Logic
+    const auth = firebase.auth();
     const loginForm = document.getElementById('loginForm');
-
+    
     loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();  // Prevent the form from submitting and resetting
-
+      e.preventDefault();
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
-      console.log('Login attempted with email:', email);  // Log the email to ensure the function is called
-      
+
       try {
-        console.log('Attempting to sign in...');
-        // Attempt to sign in with Firebase Authentication
-        await signInWithEmailAndPassword(auth, email, password);
-        console.log('Login successful');
-        // On success, redirect to the dashboard page
-        window.location.href = 'dashboard.html';  // Change this to your actual dashboard URL
-        
+        await auth.signInWithEmailAndPassword(email, password);
+        // Successful login, redirect to dashboard
+        window.location.href = 'dashboard.html';
       } catch (error) {
-        console.error('Login failed:', error);  // Log the error message if login fails
-        alert(`Error: ${error.message}`);  // Show error alert
+        alert(`Error: ${error.message}`);
       }
     });
   </script>
