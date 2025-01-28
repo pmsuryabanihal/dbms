@@ -24,6 +24,7 @@
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
+    
   </script>
 </head>
 <body>
@@ -36,23 +37,24 @@
 
   <script>
     // Firebase Authentication Logic
-    const auth = getAuth();
+    const auth = getAuth();  // Initialize the Auth service here
     const loginForm = document.getElementById('loginForm');
-    
+
     loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
+      e.preventDefault();  // Prevent form from submitting normally
+      
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
       
       try {
-        // Sign in with Firebase Authentication
+        // Attempt to sign in with Firebase Authentication
         await signInWithEmailAndPassword(auth, email, password);
         
-        // Redirect to the dashboard after successful login
+        // On success, redirect to the dashboard page
         window.location.href = 'dashboard.html';  // Change this to your actual dashboard URL
         
       } catch (error) {
-        alert(`Error: ${error.message}`); // Display error message if login fails
+        alert(`Error: ${error.message}`);  // Show any errors that occur during login
       }
     });
   </script>
