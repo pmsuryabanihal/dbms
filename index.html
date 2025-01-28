@@ -7,7 +7,6 @@
   <script type="module">
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-analytics.js";
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
     
     // Your web app's Firebase configuration
@@ -23,7 +22,7 @@
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
+    const auth = getAuth();
     
   </script>
 </head>
@@ -37,24 +36,27 @@
 
   <script>
     // Firebase Authentication Logic
-    const auth = getAuth();  // Initialize the Auth service here
     const loginForm = document.getElementById('loginForm');
 
     loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();  // Prevent form from submitting normally
+      e.preventDefault();  // Prevent the form from submitting and resetting
       
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
+      
+      console.log('Login attempted with email:', email);  // Log the email to ensure the function is called
       
       try {
         // Attempt to sign in with Firebase Authentication
         await signInWithEmailAndPassword(auth, email, password);
         
+        console.log('Login successful');
         // On success, redirect to the dashboard page
         window.location.href = 'dashboard.html';  // Change this to your actual dashboard URL
         
       } catch (error) {
-        alert(`Error: ${error.message}`);  // Show any errors that occur during login
+        console.log('Login failed:', error.message);  // Log the error message if login fails
+        alert(`Error: ${error.message}`);  // Show error alert
       }
     });
   </script>
