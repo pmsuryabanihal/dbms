@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PM SURYA BANIHAL</title>
   <script type="module">
-    // Import the functions you need from the SDKs you need
+    // Import necessary Firebase modules
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
     
-    // Your web app's Firebase configuration
+    // Your Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyDgH3oR0YehNzeV9RqIM6_R0yemuzI1wqg",
       authDomain: "dbmspmsurya.firebaseapp.com",
@@ -20,9 +20,9 @@
       measurementId: "G-6EVZH7QZL6"
     };
 
-    // Initialize Firebase
+    // Initialize Firebase app
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth();
+    const auth = getAuth(app);
   </script>
 
   <!-- Add some styles for the page -->
