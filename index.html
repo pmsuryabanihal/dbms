@@ -23,11 +23,67 @@
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth();
-    
   </script>
+
+  <!-- Add some styles for the page -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7fc;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 50px;
+      color: #007BFF;
+    }
+    #loginForm {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    #loginForm input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    #loginForm button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007BFF;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    #loginForm button:hover {
+      background-color: #0056b3;
+    }
+    #loginForm input:focus {
+      border-color: #007BFF;
+      outline: none;
+    }
+    .alert {
+      color: red;
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+
 </head>
 <body>
-  <h1>Welcome to Your PM SURYA BANIHAL, Please login</h1>
+  <h1>Welcome to PM SURYA BANIHAL, Please Login</h1>
+
   <form id="loginForm">
     <input type="email" id="email" placeholder="Enter your email" required />
     <input type="password" id="password" placeholder="Enter your password" required />
