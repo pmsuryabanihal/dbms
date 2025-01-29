@@ -1,94 +1,172 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 
+// Replace with your actual Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyD...",
-  authDomain: "dbmspmsurya.firebaseapp.com",
-  projectId: "dbmspmsurya",
-  storageBucket: "dbmspmsurya.firebasestorage.app",
-  messagingSenderId: "889452567773",
-  appId: "1:889452567773:web:47890dcf925a8421018f34",
+  // ... your Firebase configuration
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth();
-const db = getFirestore();
+const db = getFirestore(app);
 
-// LOGIN FUNCTION
-document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+const customerList = document.getElementById('customerList');
+const addCustomerBtn = document.getElementById('addCustomerBtn');
+const customerForm = document.getElementById('customerForm');
+const customerDataForm = document.getElementById('customerDataForm');
+const customerIdInput = document.getElementById('customerId');
+const customerNameInput = document.getElementById('customerName');
+const customerEmailInput = document.getElementById('customerEmail');
+const customerPhoneInput = document.getElementById('customerPhone');
+const customerAddressInput = document.getElementById('customerAddress');
+const customerCompanyInput = document.getElementById('customerCompany');
+const customerNotesInput = document.getElementById('customerNotes');
+const cancelFormBtn = document.getElementById('cancelForm');
 
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    window.location.href = "dashboard.html";
-  } catch (error) {
-    alert(error.message);
-  }
-});
-
-// LOGOUT FUNCTION
-document.getElementById("logoutBtn")?.addEventListener("click", async () => {
-  await signOut(auth);
-  window.location.href = "index.html";
-});
-
-// CUSTOMER FORM TOGGLE
-document.getElementById("addCustomerBtn")?.addEventListener("click", () => document.getElementById("customerForm").classList.toggle("hidden"));
-document.getElementById("cancelForm")?.addEventListener("click", () => document.getElementById("customerForm").classList.add("hidden"));
-
-// ADD OR EDIT CUSTOMER
-document.getElementById("customerDataForm")?.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const id = document.getElementById("customerId").value;
-  const name = document.getElementById("customerName").value;
-  const email = document.getElementById("customerEmail").value;
-  const phone = document.getElementById("customerPhone").value;
-  const address = document.getElementById("customerAddress").value;
-
-  if (id) {
-    await updateDoc(doc(db, "customers", id), { name, email, phone, address });
-  } else {
-    await addDoc(collection(db, "customers"), { name, email, phone, address });
-  }
-
-  alert("Customer Saved!");
-  location.reload();
-});
-
-// FETCH CUSTOMERS
-async function loadCustomers() {
-  const customerList = document.getElementById("customerList");
-  const querySnapshot = await getDocs(collection(db, "customers"));
+// Function to fetch and display customers
+async function fetchCustomers() {
+  const customersRef = collection(db, 'customers');
+  const querySnapshot = await getDocs(customersRef);
+  customerList.innerHTML = ''; 
 
   querySnapshot.forEach((doc) => {
-    const data = doc.data();
-    const li = document.createElement("li");
-    li.innerHTML = `${data.name} - ${data.email} - ${data.phone} 
-                    <button onclick="editCustomer('${doc.id}', '${data.name}', '${data.email}', '${data.phone}', '${data.address}')">Edit</button>
-                    <button onclick="deleteCustomer('${doc.id}')">Delete</button>`;
-    customerList.appendChild(li);
+    const customer = doc.data();
+    const customerItem = document.createElement('li');
+    customerItem.classList.add('customer-item');
+    customerItem.innerHTML = `
+      <span>${customer.name}</span> - 
+      <span>${customer.email}</span>
+      <button class="editBtn" data-id="${doc.id}">Edit</button>
+      <button class="deleteBtn" data-id="${doc.id}">Delete</button>
+    `;
+    customerList.appendChild(customerItem);
+  });
+
+  // Add event listeners for edit and delete buttons
+  const editBtns = document.querySelectorAll('.editBtn');
+  editBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const customerId = btn.getAttribute('data-id');
+      editCustomer(customerId);
+    });
+  });
+
+  const deleteBtns = document.querySelectorAll('.deleteBtn');
+  deleteBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const customerId = btn.getAttribute('data-id');
+      deleteCustomer(customerId);
+    });
   });
 }
 
-// EDIT CUSTOMER
-window.editCustomer = function (id, name, email, phone, address) {
-  document.getElementById("customerId").value = id;
-  document.getElementById("customerName").value = name;
-  document.getElementById("customerEmail").value = email;
-  document.getElementById("customerPhone").value = phone;
-  document.getElementById("customerAddress").value = address;
-  document.getElementById("customerForm").classList.remove("hidden");
-};
+// Function to show/hide customer form
+function toggleForm() {
+  customerForm.classList.toggle('hidden');
+}
 
-// DELETE CUSTOMER
-window.deleteCustomer = async function (id) {
-  if (confirm("Are you sure?")) {
-    await deleteDoc(doc(db, "customers", id));
-    location.reload();
+// Function to add a new customer
+async function addCustomer() {
+  try {
+    const docRef = await addDoc(collection(db, 'customers'), {
+      name: customerNameInput.value,
+      email: customerEmailInput.value,
+      phone: customerPhoneInput.value,
+      address: customerAddressInput.value,
+      company: customerCompanyInput.value,
+      notes: customerNotesInput.value,
+    });
+
+    console.log('Document written with ID: ', docRef.id);
+    clearForm();
+    toggleForm();
+    fetchCustomers(); 
+  } catch (e) {
+    console.error('Error adding document: ', e);
   }
-};
+}
 
-loadCustomers();
+// Function to edit a customer
+async function editCustomer(customerId) {
+  const docRef = doc(db, 'customers', customerId);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    const customerData = docSnap.data();
+    customerIdInput.value = customerId;
+    customerNameInput.value = customerData.name;
+    customerEmailInput.value = customerData.email;
+    customerPhoneInput.value = customerData.phone;
+    customerAddressInput.value = customerData.address;
+    customerCompanyInput.value = customerData.company;
+    customerNotesInput.value = customerData.notes;
+    toggleForm();
+  } else {
+    // Handle case where document does not exist
+    console.log('No such document!');
+  }
+}
+
+// Function to update a customer
+async function updateCustomer() {
+  try {
+    const customerId = customerIdInput.value;
+    const docRef = doc(db, 'customers', customerId);
+    await updateDoc(docRef, {
+      name: customerNameInput.value,
+      email: customerEmailInput.value,
+      phone: customerPhoneInput.value,
+      address: customerAddressInput.value,
+      company: customerCompanyInput.value,
+      notes: customerNotesInput.value,
+    });
+    console.log('Document updated with ID: ', customerId);
+    clearForm();
+    toggleForm();
+    fetchCustomers(); 
+  } catch (e) {
+    console.error('Error updating document: ', e);
+  }
+}
+
+// Function to delete a customer
+async function deleteCustomer(customerId) {
+  try {
+    await deleteDoc(doc(db, 'customers', customerId));
+    console.log('Document deleted with ID: ', customerId);
+    fetchCustomers();
+  } catch (e) {
+    console.error('Error deleting document: ', e);
+  }
+}
+
+// Function to clear form fields
+function clearForm() {
+  customerIdInput.value = '';
+  customerNameInput.value = '';
+  customerEmailInput.value = '';
+  customerPhoneInput.value = '';
+  customerAddressInput.value = '';
+  customerCompanyInput.value = '';
+  customerNotesInput.value = '';
+}
+
+// Event listeners
+addCustomerBtn.addEventListener('click', () => {
+  toggleForm();
+  clearForm();
+});
+
+cancelFormBtn.addEventListener('click', toggleForm);
+
+customerDataForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (customerIdInput.value) {
+    updateCustomer();
+  } else {
+    addCustomer();
+  }
+});
+
+// Fetch customers on page load
+fetchCustomers();
