@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Management</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Customer Database</h1>
+    <button id="logoutBtn">Logout</button>
+    
+    <h2>Customers</h2>
+    <button id="addCustomerBtn">+ Add Customer</button>
+    <div id="customerForm" class="hidden">
+      <form id="customerDataForm">
+        <input type="hidden" id="customerId">
+        <input type="text" id="customerName" placeholder="Name" required>
+        <input type="email" id="customerEmail" placeholder="Email" required>
+        <input type="tel" id="customerPhone" placeholder="Phone" required>
+        <textarea id="customerAddress" placeholder="Address" required></textarea>
+        <button type="submit">Save</button>
+        <button type="button" id="cancelForm">Cancel</button>
+      </form>
+    </div>
+
+    <ul id="customerList"></ul>
+  </div>
+
+  <script type="module" src="firebase.js"></script>
+</body>
+</html>
