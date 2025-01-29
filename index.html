@@ -4,25 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PM SURYA BANIHAL</title>
-  <script type="module">
-    // Import necessary Firebase modules
-    import { initializeApp } from "firebase/app";
-    import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+  
+  <!-- Firebase SDK (Using CDN) -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
 
-    // Your Firebase configuration
+  <script>
+    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyDgH3oR0YehNzeV9RqIM6_R0yemuzI1wqg",
       authDomain: "dbmspmsurya.firebaseapp.com",
       projectId: "dbmspmsurya",
-      storageBucket: "dbmspmsurya.firebasestorage.app",
+      storageBucket: "dbmspmsurya.appspot.com",
       messagingSenderId: "889452567773",
       appId: "1:889452567773:web:47890dcf925a8421018f34",
       measurementId: "G-6EVZH7QZL6"
     };
 
-    // Initialize Firebase app
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
     console.log("Firebase Initialized");
   </script>
 
@@ -88,31 +89,33 @@
     <input type="email" id="email" placeholder="Enter your email" required />
     <input type="password" id="password" placeholder="Enter your password" required />
     <button type="submit">Login</button>
+    <p class="alert" id="error-message" style="display: none;"></p>
   </form>
 
   <script>
-    // Firebase Authentication Logic
-    const loginForm = document.getElementById('loginForm');
+    document.addEventListener("DOMContentLoaded", function () {
+      const loginForm = document.getElementById('loginForm');
+      const errorMessage = document.getElementById('error-message');
 
-    loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();  // Prevent the form from submitting and resetting
+      loginForm.addEventListener('submit', function (e) {
+        e.preventDefault();
 
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      console.log('Login attempted with email:', email);  // Log the email to ensure the function is called
-      
-      try {
-        console.log('Attempting to sign in...');
-        // Attempt to sign in with Firebase Authentication
-        await signInWithEmailAndPassword(auth, email, password);
-        console.log('Login successful');
-        // On success, redirect to the dashboard page
-        window.location.href = 'dashboard.html';  // Change this to your actual dashboard URL
-        
-      } catch (error) {
-        console.error('Login failed:', error);  // Log the error message if login fails
-        alert(`Error: ${error.message}`);  // Show error alert
-      }
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        console.log('Attempting login with email:', email);
+
+        firebase.auth().signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            console.log('Login successful');
+            window.location.href = 'dashboard.html';  // Redirect after login
+          })
+          .catch((error) => {
+            console.error('Login failed:', error);
+            errorMessage.innerText = `Error: ${error.message}`;
+            errorMessage.style.display = 'block'; // Show error message
+          });
+      });
     });
   </script>
 </body>
