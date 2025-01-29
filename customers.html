@@ -10,16 +10,24 @@
   <div class="container">
     <h1>Customer Database</h1>
     <button id="logoutBtn">Logout</button>
-    
+
     <h2>Customers</h2>
     <button id="addCustomerBtn">+ Add Customer</button>
     <div id="customerForm" class="hidden">
       <form id="customerDataForm">
         <input type="hidden" id="customerId">
+        <label for="customerName">Name:</label>
         <input type="text" id="customerName" placeholder="Name" required>
+        <label for="customerEmail">Email:</label>
         <input type="email" id="customerEmail" placeholder="Email" required>
+        <label for="customerPhone">Phone:</label>
         <input type="tel" id="customerPhone" placeholder="Phone" required>
+        <label for="customerAddress">Address:</label>
         <textarea id="customerAddress" placeholder="Address" required></textarea>
+        <label for="customerCompany">Company:</label>
+        <input type="text" id="customerCompany" placeholder="Company">
+        <label for="customerNotes">Notes:</label>
+        <textarea id="customerNotes" placeholder="Notes"></textarea> 
         <button type="submit">Save</button>
         <button type="button" id="cancelForm">Cancel</button>
       </form>
