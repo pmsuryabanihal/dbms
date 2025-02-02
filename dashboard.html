@@ -1,24 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 90%;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        .btn {
+            display: block;
+            padding: 12px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background: #007bff;
+            border-radius: 8px;
+            transition: 0.3s;
+            text-align: center;
+        }
+        .btn:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+        @media (max-width: 600px) {
+            .button-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 400px) {
+            .button-container {
+                grid-template-columns: repeat(1, 1fr);
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Welcome to Dashboard</h1>
-    <button id="logoutBtn">Logout</button>
-    
-    <h2>Databases</h2>
-    <ul>
-      <li><a href="customers.html">Customer Database</a></li>
-      <li><a href="#">Orders Database (Coming Soon)</a></li>
-      <li><a href="#">Payments Database (Coming Soon)</a></li>
-    </ul>
-  </div>
-
-  <script type="module" src="firebase.js"></script>
+    <div class="container">
+        <h1>Dashboard</h1>
+        <div class="button-container">
+            <a href="callingform.html" class="btn">Calling From</a>
+            <a href="dataentryform.html" class="btn">Data Entry Form</a>
+            <a href="banksanctionconsumersstatusdata.html" class="btn">Bank Sanction Consumers Status</a>
+            <a href="customerserviceform.html" class="btn">Customer Service Form</a>
+            <a href="dcrserialsandinverter.html" class="btn">DCR Serials and Inverter Data</a>
+            <a href="dealerappointmentdata.html" class="btn">Dealer Appointment Data</a>
+            <a href="disbursementtallydetails.html" class="btn">Disbursement Tally Details</a>
+            <a href="incentivesdata.html" class="btn">Incentives Data</a>
+            <a href="incentivespayout.html" class="btn">Incentives Payout</a>
+            <a href="installationdetails.html" class="btn">Installation Details</a>
+            <a href="khidmatcentreappointment.html" class="btn">Khidmat Centre Appointment</a>
+            <a href="materialdespatchform.html" class="btn">Material Despatc Form</a>
+            <a href="officialappointmentdata.html" class="btn">Official Appointment Data</a>
+            <a href="portalstagestatus" class="btn">Portal Stage Status</a>
+            <a href="registrationdata.html" class="btn">Registration Data</a>
+        </div>
+    </div>
 </body>
 </html>
